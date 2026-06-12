@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  testSessions TestSession[]
+}
+
+model Question {
+  id            String                @id @default(cuid())
+  exam          String
+  subject       String
+  topic         String?
+  difficulty    String
+  difficultyScore Int                 @default(2)
+  questionText  String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctAnswer String
+  explanation   String?
+  source        String?
+  year          Int?
+  textHash      String                @unique
+  createdAt     DateTime              @default(now())
+  sessionLinks  TestSessionQuestion[]
+  answers       TestAnswer[]
+
+  @@index([exam, subject])
+  @@index([exam, subject, difficultyScore])
+  @@index([subject])
+  @@index([subject, difficultyScore])
+}
+
+model TestSession {
+  id            String                @id @default(cuid())
+  userId        String
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam          String
+  subject       String
+  questionCount Int
+  timeLimitSec  Int
+  startedAt     DateTime              @default(now())
+  endedAt       DateTime?
+  score         Int?
+  isSubmitted   Boolean               @default(false)
+  questions     TestSessionQuestion[]
+  answers       TestAnswer[]
+
+  @@index([userId, subject, endedAt])
+}
+
+model TestSessionQuestion {
+  id         String      @id @default(cuid())
+  sessionId  String
+  session    TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  orderIndex Int
+
+  @@unique([sessionId, questionId])
+  @@index([sessionId])
+}
+
+model TestAnswer {
+  id             String      @id @default(cuid())
+  sessionId      String
+  session        TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId     String
+  question       Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedAnswer String?
+  isCorrect      Boolean     @default(false)
+
+  @@unique([sessionId, questionId])
+  @@index([sessionId])
+}

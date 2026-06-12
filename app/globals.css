@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme inline {
+  --color-background: #070b14;
+  --color-foreground: #f0f4ff;
+  --color-card: #0f1629;
+  --color-card-hover: #151f38;
+  --color-primary: #6366f1;
+  --color-primary-hover: #818cf8;
+  --color-accent: #22d3ee;
+  --color-muted: #94a3b8;
+  --color-border: #1e293b;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 22, 41, 0.9) 0%,
+    rgba(15, 22, 41, 0.6) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.25), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(34, 211, 238, 0.08), transparent);
+}
+
+.option-selected {
+  border-color: var(--color-primary) !important;
+  background: rgba(99, 102, 241, 0.15) !important;
+}
+
+.option-correct {
+  border-color: var(--color-success) !important;
+  background: rgba(34, 197, 94, 0.12) !important;
+}
+
+.option-wrong {
+  border-color: var(--color-danger) !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+.timer-warning {
+  color: var(--color-danger);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.prose-math {
+  line-height: 1.7;
+}
+
+.prose-math p {
+  margin-bottom: 0.75rem;
+}
