@@ -30,6 +30,7 @@ yarn-error.log*
 
 # env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -41,3 +42,5 @@ next-env.d.ts
 # prisma
 prisma/dev.db
 prisma/dev.db-journal
+
+.gitignore
